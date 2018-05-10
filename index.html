@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Marker Labels</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 75%;
+        margin: 0;
+        padding: 0;
+      }
+      .info_window {
+        display: none;
+      }
+      .info_window a{
+        position: absolute;
+        font-size: 12px;
+        font-weight: 500;
+        display: block;
+        padding: 5px 20px;
+        text-decoration: none;
+        color: #ccc;
+        text-align: center;
+        background: #333;
+        border-radius: 2px;
+        bottom: 2px;
+        right: 5px;
+      }
+    </style>
+    
+
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <div class="info_window">
+        <h3>MIMS Hospital</h3>
+        <p>treatements availabe: 
+          <ul style="min-height: 50px;">
+            <li>ayurvedh</li>
+            <li>lorem ipsom</li>
+          </ul>
+        </p>
+        <a href="" class="btn">learn more</a>
+      </div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiAePSYQEtBQgnInAd8DugRSXUJcfTQkw"></script>
+    <script>
+      // In the following example, markers appear when the user clicks on the map.
+      // Each marker is labeled with a single alphabetical character.
+      var labels = 'h';
+      var labelIndex = 0;
+      var markers = [];
+      var infowindow;
+      var infowindows = [];
+
+      function initialize() {
+        var bangalore = { lat: 12.97, lng: 77.59 };
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 10,
+          center: bangalore
+        });
+
+        // This event listener calls addMarker() when the map is clicked.
+          addMarker({ lat: 13, lng: 77.59 }, map);
+        // Add a marker at the center of the map.
+        var contentString = document.getElementsByClassName('info_window');
+          
+        for(var i = 0; i<contentString.length; i++){
+          infowindow = new google.maps.InfoWindow({
+              content: contentString[i]
+            });
+
+
+            
+            infowindows.push(infowindow);
+        }
+        // contentString.forEach(function(ele, i){
+            
+        // })
+        
+
+
+          markers.forEach(function(element, i) {
+            
+            element.addListener('click', function() {
+                infowindows[i].open(map, element);
+                document.getElementsByClassName('info_window')[i].style.display = "block"
+            });
+        });
+
+        markers.forEach(function(element, i) {
+                infowindows[i].open(map, element);
+                document.getElementsByClassName('info_window')[i].style.display = "block"
+        });
+      }
+
+      
+      // Adds a marker to the map.
+      function addMarker(location, map) {
+        // Add the marker at the clicked location, and add the next-available label
+        // from the array of alphabetical characters.
+        var marker = new google.maps.Marker({
+          position: location,
+          label: labels,
+          map: map
+        });
+        markers.push(marker);
+      }
+
+       
+
+        
+      
+        
+
+      google.maps.event.addDomListener(window, 'load', initialize);
+
+
+      
+      
+    </script>
+  </body>
+</html>
